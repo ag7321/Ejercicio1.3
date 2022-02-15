@@ -82,8 +82,9 @@ public class ActivityConfirmarEliminar extends AppCompatActivity {
     }
 
     private void volver(){
-        Intent inten = new Intent(this, ActivityEliminar.class);
-        startActivity(inten);
+        Intent intent = new Intent(this, ActivityEliminar.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        startActivity(intent);
     }
 
 

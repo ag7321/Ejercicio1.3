@@ -37,7 +37,10 @@ public class ActivityIngresar extends AppCompatActivity {
             public void onClick(View view) {
                 if(validarVacio() == true){
                     Toast.makeText(getApplicationContext(),"Los campos no deben estar vacios", Toast.LENGTH_LONG).show();
-                }else{ AgregarPersonas();}
+                }else if(correoval(correo.getText().toString()) !=true){
+                    Toast.makeText(getApplicationContext(),"Por favor ingrese un correo valido", Toast.LENGTH_LONG).show();
+                }
+                else{ AgregarPersonas();}
 
 
             }
@@ -61,10 +64,10 @@ public class ActivityIngresar extends AppCompatActivity {
 
         db.close();
 
-        LimpiarPantalla();
+        Limpiar();
     }
 
-    private void LimpiarPantalla() {
+    private void Limpiar() {
         nombres.setText("");
         apellidos.setText("");
         edad.setText("");
@@ -72,13 +75,27 @@ public class ActivityIngresar extends AppCompatActivity {
         direccion.setText("");
     }
 
-    private boolean validarVacio(){
+    public boolean validarVacio(){
         boolean va=false;
         if(nombres.getText().toString().isEmpty()||apellidos.getText().toString().isEmpty()||edad.getText().toString().isEmpty()||correo.getText().toString().isEmpty()
            ||direccion.getText().toString().isEmpty()){
             va = true;
         }
         return va;
+    }
+
+    public boolean correoval(String email){
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+        Matcher mather = pattern.matcher(email);
+
+        if (mather.find() == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

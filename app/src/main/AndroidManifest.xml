@@ -11,9 +11,11 @@
         android:theme="@style/Theme.Ejercicio13">
         <activity
             android:name=".ActivityConfirmarEliminar"
+            android:noHistory="true"
             android:exported="false" />
         <activity
             android:name=".ActivityEliminar"
+            android:noHistory="true"
             android:exported="false" />
         <activity
             android:name=".ActivityVerSeleccionado"

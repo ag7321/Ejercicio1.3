@@ -19,6 +19,8 @@ import com.example.ejercicio13.configuraciones.Transacciones;
 import com.example.ejercicio13.tablas.Personas;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ActivityEditar extends AppCompatActivity {
     SQLiteConexion conexion;
@@ -29,7 +31,7 @@ public class ActivityEditar extends AppCompatActivity {
     ArrayList<String> lista_personas;
     ArrayList<Personas> lista;
     ArrayAdapter<CharSequence> adp;
-
+    ActivityIngresar verfunciones;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,7 @@ public class ActivityEditar extends AppCompatActivity {
         direccion = (EditText) findViewById(R.id.txtDireccion);
         btnEditar = (Button) findViewById(R.id.btnGuardar);
 
-        obtenerListaPersonas();
-
-        adp = new ArrayAdapter(this,android.R.layout.simple_spinner_item,lista_personas);
-        sppersonas.setAdapter(adp);
+        recargarCombo();
 
 
         sppersonas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -73,7 +72,13 @@ public class ActivityEditar extends AppCompatActivity {
         btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditarPersonas();
+                if(validarVacio() == true){
+                    Toast.makeText(getApplicationContext(),"Los campos no deben estar vacios", Toast.LENGTH_LONG).show();
+                }else if(correoval(correo.getText().toString()) != true){
+                    Toast.makeText(getApplicationContext(),"Por favor ingresar un correo valido", Toast.LENGTH_LONG).show();
+                }
+                else{EditarPersonas();}
+
             }
         });
 
@@ -134,10 +139,38 @@ public class ActivityEditar extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Registro Editado con exito!! Codigo"+resultado.toString(), Toast.LENGTH_LONG).show();
 
         db.close();
+        recargarCombo();
 
+    }
 
+    public void recargarCombo(){
+        obtenerListaPersonas();
 
+        adp = new ArrayAdapter(this,android.R.layout.simple_spinner_item,lista_personas);
+        sppersonas.setAdapter(adp);
+    }
 
+    public boolean validarVacio(){
+        boolean va=false;
+        if(nombres.getText().toString().isEmpty()||apellidos.getText().toString().isEmpty()||edad.getText().toString().isEmpty()||correo.getText().toString().isEmpty()
+                ||direccion.getText().toString().isEmpty()){
+            va = true;
+        }
+        return va;
+    }
+
+    public boolean correoval(String email){
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+        Matcher mather = pattern.matcher(email);
+
+        if (mather.find() == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
